@@ -11,10 +11,10 @@ class TSN(nn.Module):
                  dropout=0.8,
                  crop_num=1, partial_bn=True):
         super(TSN, self).__init__()
-        self.modality = modality
+        self.modality = modality        #输入的是 光流 还是 RGBDiff
         self.num_segments = num_segments
         self.reshape = True
-        self.before_softmax = before_softmax
+        self.before_softmax = before_softmax        #其实就是告诉网络最后一层是不是要到softmax为止
         self.dropout = dropout
         self.crop_num = crop_num
         self.consensus_type = consensus_type
@@ -136,6 +136,11 @@ TSN Configurations:
     def partialBN(self, enable):
         self._enable_pbn = enable
 
+
+    '''
+        把网络中的参数都存下来
+    '''
+
     def get_optim_policies(self):
         first_conv_weight = []
         first_conv_bias = []
@@ -167,7 +172,6 @@ TSN Configurations:
                 bn.extend(list(m.parameters()))
             elif isinstance(m, torch.nn.BatchNorm2d):
                 bn_cnt += 1
-                # later BN's are frozen
                 if not self._enable_pbn or bn_cnt == 1:
                     bn.extend(list(m.parameters()))
             elif len(m._modules) == 0:
