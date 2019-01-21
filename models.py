@@ -136,7 +136,6 @@ TSN Configurations:
     def partialBN(self, enable):
         self._enable_pbn = enable
 
-
     '''
         把网络中的参数都存下来
     '''
@@ -226,7 +225,6 @@ TSN Configurations:
                 new_data[:, :, x - 1, :, :, :] = input_view[:, :, x, :, :, :] - input_view[:, :, x - 1, :, :, :]
 
         return new_data
-
 
     def _construct_flow_model(self, base_model):
         # modify the convolution layers
